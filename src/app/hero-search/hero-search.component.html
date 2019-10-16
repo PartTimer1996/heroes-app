@@ -6,6 +6,10 @@
 </h4>
 <input type="text" id="search-box" #searchBox (input)="search(searchBox.value)" />
 
+<div class="text-center">
+  <p class="load" *ngIf="Loading">loading...</p>
+</div>
+
 <ul class="search-result">
   <li *ngFor="let hero of heroes$ | async">
     <a routerLink= "/detail/{{ hero.id }}" > {{ hero.name }}

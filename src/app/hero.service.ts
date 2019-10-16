@@ -14,7 +14,7 @@ export class HeroService {
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
-
+  private loading:boolean = false;
   private heroesUrl = 'api/heroes';  // URL to web api
 
   constructor( private http: HttpClient,
@@ -76,6 +76,7 @@ removeHero(hero: Hero | Hero): Observable<Hero>{
 }
 
 searchHeroes(term: string): Observable<Hero[]> {
+
   if (!term.trim()){
 
     return of([]);

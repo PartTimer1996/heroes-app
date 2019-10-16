@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import {
-  debounceTime, distinctUntilChanged, switchMap
+  debounceTime, distinctUntilChanged, switchMap,tap
 } from 'rxjs/operators';
 
 import { Hero }         from '../hero';
@@ -15,6 +15,7 @@ import { HeroService }  from '../hero.service';
 export class HeroSearchComponent implements OnInit {
   heroes$: Observable<Hero[]>;
   private searchTerms = new Subject<string>();
+  Loading: boolean = false;
 
 constructor(private heroservice: HeroService) { }
 
@@ -23,11 +24,15 @@ constructor(private heroservice: HeroService) { }
   }
 
   ngOnInit(): void {
+
     this.heroes$ = this.searchTerms.pipe(
+      tap(() => this.Loading = true),
       debounceTime(300),
       distinctUntilChanged(),
-      switchMap((term:string) => this.heroservice.searchHeroes(term))
+      switchMap((term:string) => this.heroservice.searchHeroes(term)),
+      tap(() => this.Loading = false)
     );
+
   }
 
 }
